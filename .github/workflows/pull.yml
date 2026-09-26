@@ -1,0 +1,73 @@
+name: Mirror Plugin Repo into Org
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: "Source repo URL (e.g. https://github.com/someone/plugin-repo)"
+        required: true
+        type: string
+      new_repo_name:
+        description: "Name for the new repo in the org (leave blank to reuse source repo name)"
+        required: false
+        type: string
+      collaborator_username:
+        description: "GitHub username to invite as collaborator (optional)"
+        required: false
+        type: string
+
+env:
+  ORG: Dioxamine-plugins-repo
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Derive repo name
+        id: vars
+        run: |
+          SRC_URL="${{ inputs.repo_url }}"
+          SRC_URL="${SRC_URL%.git}"
+          DEFAULT_NAME="${SRC_URL##*/}"
+          NAME="${{ inputs.new_repo_name }}"
+          if [ -z "$NAME" ]; then
+            NAME="$DEFAULT_NAME"
+          fi
+          echo "repo_name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "source_url=$SRC_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Clone source repo (bare mirror)
+        run: |
+          git clone --bare "${{ steps.vars.outputs.source_url }}.git" mirror.git
+
+      - name: Create new repo in org
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          gh repo create "${{ env.ORG }}/${{ steps.vars.outputs.repo_name }}" \
+            --public \
+            --confirm
+
+      - name: Push mirrored content into new org repo
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          cd mirror.git
+          git push --mirror "https://x-access-token:${GH_TOKEN}@github.com/${{ env.ORG }}/${{ steps.vars.outputs.repo_name }}.git"
+
+      - name: Invite collaborator (if provided)
+        if: ${{ inputs.collaborator_username != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          gh api \
+            --method PUT \
+            "orgs/${{ env.ORG }}/repos/${{ steps.vars.outputs.repo_name }}/collaborators/${{ inputs.collaborator_username }}" \
+            -f permission=push
+
+      - name: Summary
+        run: |
+          echo "✅ Mirrored ${{ steps.vars.outputs.source_url }} -> https://github.com/${{ env.ORG }}/${{ steps.vars.outputs.repo_name }}"
+          if [ -n "${{ inputs.collaborator_username }}" ]; then
+            echo "✅ Invited ${{ inputs.collaborator_username }} as a collaborator (pending acceptance)"
+          fi
