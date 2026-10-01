@@ -1,0 +1,125 @@
+name: Submit a Plugin
+description: Request to add your plugin to the Dioxamine Plugin Registry
+title: "[Plugin Submission] "
+labels: ["plugin-submission", "pending-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting a plugin! Please make sure your repo already has
+        `plugin.json`, `update.json`, an icon, and a GitHub Release with a `.zip`
+        asset before submitting — see the README for the required schema.
+
+  - type: input
+    id: plugin_name
+    attributes:
+      label: Plugin Name
+      description: The "name" field from your plugin.json
+    validations:
+      required: true
+
+  - type: input
+    id: plugin_id
+    attributes:
+      label: Plugin ID
+      description: The "id" field from your plugin.json
+    validations:
+      required: true
+
+  - type: input
+    id: repo_url
+    attributes:
+      label: Repository URL
+    validations:
+      required: true
+
+  - type: input
+    id: github_username
+    attributes:
+      label: Your GitHub Username
+    validations:
+      required: true
+
+  - type: input
+    id: description
+    attributes:
+      label: Short Description
+      description: One line describing what your plugin does
+    validations:
+      required: true
+
+  - type: dropdown
+    id: is_author
+    attributes:
+      label: Are you the original author of this plugin?
+      options:
+        - "Yes, I wrote this plugin myself"
+        - "No, but I have the author's explicit permission to submit it"
+        - "No, and I have not contacted the author"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: author_consent
+    attributes:
+      label: Author Consent
+      description: Required regardless of your answer above
+      options:
+        - label: I confirm I am the author, OR I have explicit written consent from the author to submit this plugin to this registry
+          required: true
+        - label: I understand that if I am not the author and have not obtained consent, this submission will be rejected and may be reported
+          required: true
+
+  - type: dropdown
+    id: llm_used
+    attributes:
+      label: Was AI/LLM assistance used to create this plugin?
+      options:
+        - "No, fully hand-written"
+        - "Yes, partially (AI-assisted, human-reviewed)"
+        - "Yes, substantially (majority AI-generated)"
+        - "Not sure / N/A"
+    validations:
+      required: true
+
+  - type: textarea
+    id: llm_details
+    attributes:
+      label: AI/LLM Details (if applicable)
+      description: If AI assistance was used, briefly note what tool and what it helped with
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: security_review
+    attributes:
+      label: Security & Quality Checklist
+      options:
+        - label: My plugin.json is valid and matches the required schema
+          required: true
+        - label: My plugin.json's "updateJson" field points to a valid, reachable update.json URL
+          required: true
+        - label: My update.json's "download" field points to a working .zip release asset
+          required: true
+        - label: The permissions I declare accurately reflect what my plugin actually does (no excessive/unused permissions)
+          required: true
+        - label: My code does not contain obfuscated, minified-without-source, or intentionally hidden functionality
+          required: true
+        - label: I will keep version/versionCode and update.json in sync on future releases
+          required: true
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes (optional)
+      description: Anything else maintainers should know
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: mirror_consent
+    attributes:
+      label: Mirroring Consent
+      options:
+        - label: I consent to this repository being cloned (full history) into this organization, and understand I will be invited as a collaborator with write access to the mirrored copy
+          required: true
