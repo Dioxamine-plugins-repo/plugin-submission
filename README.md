@@ -61,7 +61,7 @@ Minimum required for registry inclusion:
   "name": "Your Plugin Name",
   "description": "Short description of what it does",
   "version": "1.0.0",
-  "versionCode": 1,
+  "versionCode": 4,
   "author": "your-username",
   "entry": "index.html",
   "icon": "icon.png",
