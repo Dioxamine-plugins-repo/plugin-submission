@@ -54,7 +54,7 @@ for the full schema and all supported fields (permissions, entry point,
 fullscreen mode, button interception, etc).
 
 Minimum required for registry inclusion:
-
+```
 {
   "schemaVersion": 1,
   "id": "io.github.username.yourplugin",
@@ -67,14 +67,14 @@ Minimum required for registry inclusion:
   "icon": "icon.png",
   "minAppVersionCode": 1,
   "permissions": {},
-  "homepage": "https://github.com/username/yourplugin",
-  "updateJson": "https://raw.githubusercontent.com/<org>/<your-plugin-repo>/main/update.json"
+  "homepage": "homepage of plugin",
+  "updateJson": "link to update.json"
 }
-
+```
 ## update.json
 
 Kept at your repo root, updated on every release:
-
+```
 {
   "id": "io.github.username.yourplugin",
   "version": "1.0.1",
@@ -82,7 +82,7 @@ Kept at your repo root, updated on every release:
   "download": "Download Link",
   "changelog": "Changelog Link"
 }
-
+```
 - `versionCode` **must** increase with every release — the app compares this
   integer to decide if an update is available, not the `version` string.
 - `changelog` is a URL to a plain text/markdown file, not inline text.
