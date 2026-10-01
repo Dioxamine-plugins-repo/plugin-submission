@@ -1,4 +1,3 @@
-```
 # Plugin Submissions
 
 This repo is the intake point for submitting plugins to the **Dioxamine Plugin
@@ -110,4 +109,3 @@ This registry and its submission process are provided under the same
 [Apache-2.0](https://github.com/rhythmcache/Dioxamine/blob/main/LICENSE)
 license as Dioxamine itself. Submitted plugins retain whatever license their
 original author has chosen.
-```
