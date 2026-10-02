@@ -60,8 +60,8 @@ Minimum required for registry inclusion:
   "id": "io.github.username.yourplugin",
   "name": "Your Plugin Name",
   "description": "Short description of what it does",
-  "version": "1.0.0",
-  "versionCode": 4,
+  "version": "x.n.m",
+  "versionCode": 5,
   "author": "your-username",
   "entry": "index.html",
   "icon": "icon.png",
@@ -77,8 +77,8 @@ Kept at your repo root, updated on every release:
 ```
 {
   "id": "io.github.username.yourplugin",
-  "version": "1.0.1",
-  "versionCode": 2,
+  "version": "x.n.m",
+  "versionCode": x,
   "download": "Download Link",
   "changelog": "Changelog Link"
 }
